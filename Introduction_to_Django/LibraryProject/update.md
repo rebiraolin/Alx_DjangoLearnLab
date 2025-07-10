@@ -1,8 +1,3 @@
-# Update Operation
-
-## Python Commands:
-
-```python
 from bookshelf.models import Book
 
 # Get the book instance to update

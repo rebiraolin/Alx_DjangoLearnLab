@@ -1,8 +1,3 @@
-# Retrieve Operation
-
-## Python Commands:
-
-```python
 from bookshelf.models import Book
 
 # Retrieve all books
