@@ -1,25 +1,13 @@
 """
 URL configuration for LibraryProject project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include # <--- Import 'include' here!
-from relationship_app import views
+from django.urls import path, include # Ensure 'include' is imported
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Include the URLs from your relationship_app
-    path('library/', include('relationship_app.urls')), # <--- Add this line!
-    path('', views.home, name='home'),
+    # Include all URLs from your relationship_app directly at the project root.
+    # This means URLs like 'books/' and 'library/<pk>/' from your app's urls.py
+    # will be accessible directly as /books/ and /library/<pk>/.
+    path('', include('relationship_app.urls')),
 ]

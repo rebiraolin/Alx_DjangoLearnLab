@@ -2,21 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to the Library</title>
+    <title>Home</title>
 </head>
 <body>
     <h1>Welcome to the Django Library App!</h1>
     <p>This is the homepage.</p>
-
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}! You are logged in.</p>
-        <p><a href="{% url 'relationship_app:logout' %}">Logout</a></p>
-        <p><a href="{% url 'relationship_app:book_list' %}">View All Books</a></p>
-        <p><a href="{% url 'relationship_app:library_detail' pk=1 %}">View Central City Library</a></p>
-    {% else %}
-        <p>You are not logged in.</p>
-        <p><a href="{% url 'relationship_app:login' %}">Login</a></p>
-        <p><a href="{% url 'relationship_app:register' %}">Register</a></p>
-    {% endif %}
+    <p><a href="{% url 'book_list' %}">View All Books</a></p>
+    <p><a href="{% url 'library_detail' pk=1 %}">View Central City Library</a> (Assuming ID 1 exists)</p>
 </body>
 </html>
