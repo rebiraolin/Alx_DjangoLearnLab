@@ -1,15 +1,9 @@
-# Delete Operation
-
-## Python Commands:
-
-```python
+# Deleting the Book instance
 from bookshelf.models import Book
-
-# Get the book instance to delete
-book_to_delete = Book.objects.get(title="Nineteen Eighty-Four")
-
-# Delete the book
-book_to_delete.delete()
-
-# Confirm deletion by retrieving all books
-print(Book.objects.all())
+>>> book = Book.objects.get(title="Nineteen Eighty-Four")
+>>> book.delete()
+(1, {'bookshelf.Book': 1})
+# Verifying deletion
+>>> books = Book.objects.all()
+>>> print(f"All Books after deletion: {list(books)}")
+All Books after deletion: []
