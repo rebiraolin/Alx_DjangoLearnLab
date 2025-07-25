@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Django Library App!</h1>
+    <p>This is the homepage.</p>
+    <p><a href="{% url 'book_list' %}">View All Books</a></p>
+    <p><a href="{% url 'library_detail' pk=1 %}">View Central City Library</a> (Assuming ID 1 exists)</p>
+</body>
+</html>
