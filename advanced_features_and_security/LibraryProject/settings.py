@@ -32,15 +32,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'users',
+    # 'users', # REMOVED: CustomUser has been moved to 'bookshelf'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookshelf',
-    'relationship_app',
+    'bookshelf', # IMPORTANT: Keep this, as it now contains your CustomUser model
+    'relationship_app', # Keep this if it's another app you're using
 
 ]
 
@@ -116,11 +116,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-AUTH_USER_MODEL = 'users.CustomUser'
+# IMPORTANT: Set AUTH_USER_MODEL to point to CustomUser in the bookshelf app
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Make sure this points to a 'media' folder at your project root
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
