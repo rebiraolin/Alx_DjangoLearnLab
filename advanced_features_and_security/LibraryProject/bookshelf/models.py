@@ -1,29 +1,36 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
-class CustomUserManager(UserManager):
-    def create_user(self, username, email=None, password=None, **extra_fields):
-        if email:
-            email = self.normalize_email(email)
-        return super().create_user(username, email, password, **extra_fields)
 
-    def create_superuser(self, username, email=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
+class CustomUserManager(BaseUserManager):
+    def create_user(self, username, email, password, **other_fields):
+        if not email:
+            raise ValueError("Email field must be set")
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
+        email = self.normalize_email(email)
+        other_fields.setdefault('is_active', True)
+        user = self.model(username=username, email=email, **other_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, username, email, password, **other_fields):
+        other_fields.setdefault('is_staff', True)
+        other_fields.setdefault('is_superuser', True)
+        other_fields.setdefault('is_active', True)
+
+        if other_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True')
+        if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return super().create_superuser(username, email, password, **extra_fields)
+        return self.create_user(username, email, password, **other_fields)
 
 
 class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+    date_of_birth = models.DateField()
+    profile_photo = models.ImageField(upload_to='profile_photos/')
 
     objects = CustomUserManager()
 
