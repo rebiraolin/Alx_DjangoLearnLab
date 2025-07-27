@@ -1,57 +1,33 @@
-# query_samples.py
-# Run these queries from a Django shell: python manage.py shell
+from models import Book, Author, Librarian, Library
 
-from relationship_app.models import Author, Book, Library, Librarian #
-
-def get_books_by_author(author_name): #
-    """
-    Queries all books by a specific author.
-    Example usage: get_books_by_author("J.K. Rowling")
-    """
+def book_by_author(author_name):
     try:
         author = Author.objects.get(name=author_name)
         books = Book.objects.filter(author=author)
-        print(f"\nBooks by {author_name}:")
+        print(f"Books by {author_name}")
         for book in books:
-            print(f"- {book.title}")
-        return books
+            print(f"- {book}")
     except Author.DoesNotExist:
-        print(f"Author '{author_name}' not found.")
-        return []
+        print(f"No author found with the name {author_name}")
 
-def get_books_in_library(library_name): #
-    """
-    Lists all books in a library.
-    Example usage: get_books_in_library("Central City Library")
-    """
+
+def books_in_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
         books = library.books.all()
-        print(f"\nBooks in {library_name}:")
+        print(f"Books in {library_name} library: ")
         for book in books:
-            print(f"- {book.title} by {book.author.name}")
-        return books
+            print(f"- {book}")
     except Library.DoesNotExist:
-        print(f"Library '{library_name}' not found.")
-        return []
+        print(f"No library with the name {library_name}")
 
-def get_librarian_for_library(library_name): #
-    """
-    Retrieves the librarian for a library.
-    Example usage: get_librarian_for_library("Central City Library")
-    """
+
+def librarian_from_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        librarian = Librarian.objects.get(library=library)
-        print(f"\nLibrarian for {library_name}: {librarian.name}")
-        return librarian
-    except Library.DoesNotExist:
-        print(f"Library '{library_name}' not found.")
-        return None
-    except Librarian.DoesNotExist:
-        print(f"No librarian found for '{library_name}'.")
-        return None
-
-# You can add calls here for testing within the script, but ensure they are commented out or
-# wrapped in an `if __name__ == "__main__":` block if the checker runs it directly.
-# For now, let's keep it simple for the checker.
+        librarians = Librarian.objects.get(library=library)
+        print(f"Librarians for {library_name} library:")
+        for librarian in librarians:
+            print(f"- {librarian}")
+    except library.DoesNotExist:
+        print(f"No libraray found with the name: {library_name}")

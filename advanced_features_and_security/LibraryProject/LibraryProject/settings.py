@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^#d!4ogp0a$e=$7@=8j07_sldre!*=c=3z+_-=%c5nn1=_i^#!'
+SECRET_KEY = 'django-insecure-wt20(z31h8=j)*vio9x)*s!@o@_+3zdbni-noxed*_j0pw@q+t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -32,16 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'users', # REMOVED: CustomUser has been moved to 'bookshelf'
+    'bookshelf.apps.BookshelfConfig',
+    'relationship_app.apps.RelationshipAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bookshelf', # IMPORTANT: Keep this, as it now contains your CustomUser model
-    'relationship_app', # Keep this if it's another app you're using
-
 ]
 
 MIDDLEWARE = [
@@ -116,12 +113,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-# IMPORTANT: Set AUTH_USER_MODEL to point to CustomUser in the bookshelf app
-AUTH_USER_MODEL = 'bookshelf.CustomUser'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Make sure this points to a 'media' folder at your project root
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -132,3 +123,34 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'  # Prevents clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enforce HTTPS-only cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# HSTS settings to enforce HTTPS
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_SSL_REDIRECT = True
+
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+# Define the CSP policy
+CSP_DEFAULT_SRC = ["'self'"]  # Restrict content to your domain
+CSP_SCRIPT_SRC = ["'self'", 'https://trusted-scripts.com']  # Allow trusted scripts
+CSP_STYLE_SRC = ["'self'", 'https://trusted-styles.com']  # Allow trusted stylesheets
+
+# additional delete in case
+SECURE_PROXY_SSL_HEADER = True
+HTTP_X_FORWARDED_PROTO = True

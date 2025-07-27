@@ -1,4 +1,4 @@
-{% load static %}
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +13,6 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
-    <a href="{% url 'relationship_app:register' %}">Register</a>  <-- MODIFIED
+    <a href="{% url 'register' %}">Register</a>
 </body>
 </html>
