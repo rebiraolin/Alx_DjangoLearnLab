@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Form</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        form { background: #f4f4f4; padding: 20px; border-radius: 8px; max-width: 500px; margin: 20px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .success-message { color: green; font-weight: bold; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <h1>Example Form</h1>
+
+    {% if success_message %}
+        <p class="success-message">{{ success_message }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} {# Renders form fields as paragraphs #}
+        <button type="submit">Submit</button>
+    </form>
+
+    <p><a href="{% url 'bookshelf:book_list' %}">Back to Book List</a></p>
+</body>
+</html>
