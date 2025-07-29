@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Book
-from .forms import BookForm, ExampleForm
+from .forms import ExampleForm, BookForm
 from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
