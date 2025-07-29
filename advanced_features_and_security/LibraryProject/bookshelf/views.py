@@ -1,42 +1,42 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import Book
+from .forms import BookForm
 from django.contrib.auth.decorators import permission_required
-from .models import Document
-from .forms import ExampleForm
+
+# Create your views here.
+
+def index(request):
+    return HttpResponse("Hello, world. You're at the bookshelf index.")
 
 @permission_required('bookshelf.can_view', raise_exception=True)
-def documents_list(request):
-    douments = Document.objects.all()
-    return render(request, 'documents/list.html', {'book_list': douments})
+def book_list_view(request):
+    books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
 
-@permission_required('myapp.can_create', raise_exception=True)
-def document_create(request):
-    if request.method == "POST":
-        # Logic to create a new document
-        pass
-    return render(request, 'documents/create.html')
-
-@permission_required('myapp.can_edit', raise_exception=True)
-def document_edit(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
-    if request.method == "POST":
-        # Logic to edit the document
-        pass
-    return render(request, 'documents/edit.html', {'document': document})
-
-@permission_required('myapp.can_delete', raise_exception=True)
-def document_delete(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
-    document.delete()
-    return redirect('document_list')
-
-
-def example_view(request):
+@permission_required('bookshelf.can_create', raise_exception=True)
+def book_create_view(request):
+    message = 'You can create books!'
     if request.method == 'POST':
-        form = ExampleForm(request.POST)
+        form = BookForm(request.POST)
         if form.is_valid():
-            # Process the valid form data (e.g., save it, use it)
-            cleaned_data = form.cleaned_data
-            return render(request, 'bookshelf/success.html', {'data': cleaned_data})
+            form.save()
+            message = 'Book created successfully!'
+            return redirect('bookshelf:book_list')
+        else:
+            message = 'Error creating book. Please check your input.'
     else:
-        form = ExampleForm()
-    return render(request, 'bookshelf/example_form.html', {'form': form})
+        form = BookForm()
+    context = {
+        'message': message,
+        'form': form,
+    }
+    return render(request, 'bookshelf/book_form.html', context)
+
+@permission_required('bookshelf.can_edit', raise_exception=True)
+def book_edit_view(request):
+    return render(request, 'bookshelf/book_form_edit.html', {'message': 'You can edit books!'})
+
+@permission_required('bookshelf.can_delete', raise_exception=True)
+def book_delete_view(request):
+    return render(request, 'bookshelf/book_delete.html', {'message': 'You can delete books!'})

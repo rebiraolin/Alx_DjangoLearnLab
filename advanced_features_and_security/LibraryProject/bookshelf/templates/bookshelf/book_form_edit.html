@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book</title>
+</head>
+<body>
+    <h1>Edit Book Page</h1>
+    <p>{{ message }}</p>
+    <p>This page requires 'bookshelf.can_edit' permission.</p>
+
+    <form method="post">
+        {% csrf_token %} {# This tag is essential for CSRF protection #}
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" value="Existing Title"><br> {# Placeholder for existing data #}
+        <label for="author">Author:</label><br>
+        <input type="text" id="author" name="author" value="Existing Author"><br>
+        <label for="year">Publication Year:</label><br>
+        <input type="number" id="year" name="publication_year" value="2000"><br><br>
+        <input type="submit" value="Save Changes">
+    </form>
+</body>
+</html>

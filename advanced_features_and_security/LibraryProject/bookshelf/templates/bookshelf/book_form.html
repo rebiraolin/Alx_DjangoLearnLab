@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Book</title>
+</head>
+<body>
+    <h1>Create New Book Page</h1>
+    <p>{{ message }}</p>
+    <p>This page requires 'bookshelf.can_create' permission.</p>
+
+    <form method="post">
+        {% csrf_token %} {# Essential for CSRF protection #}
+        {{ form.as_p }} {# This renders each form field within <p> tags #}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
