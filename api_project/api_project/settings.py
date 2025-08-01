@@ -54,11 +54,13 @@ MIDDLEWARE = [
 
 # REST_FRAMEWORK settings for global API configuration
 REST_FRAMEWORK = {
-    # This specifies the default authentication method for all API views.
-    # TokenAuthentication requires a valid token in the Authorization header.
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    # Add this line to set IsAuthenticated as the default global permission
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 ROOT_URLCONF = "api_project.urls"

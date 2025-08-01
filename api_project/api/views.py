@@ -16,4 +16,4 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     # This permission class enforces that only authenticated users can access this viewset
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
