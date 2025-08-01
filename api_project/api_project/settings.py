@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken", # Added for token-based authentication
     "api",
 ]
 
@@ -50,6 +51,15 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# REST_FRAMEWORK settings for global API configuration
+REST_FRAMEWORK = {
+    # This specifies the default authentication method for all API views.
+    # TokenAuthentication requires a valid token in the Authorization header.
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 ROOT_URLCONF = "api_project.urls"
 
