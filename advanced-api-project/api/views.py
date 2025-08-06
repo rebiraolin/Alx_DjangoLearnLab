@@ -1,51 +1,25 @@
-from django.shortcuts import render
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework import generics, permissions
 
 
 # Create your views here.
-class BookList(generics.ListAPIView):
+class ListView(generics.ListCreateAPIView):
     """
-    View to handle listing all books in the database.
-    It provides a read-only endpoint for unauthenticated users.
+    Handles listing books and creating new books.
+    - GET method is public (read-only).
+    - POST method requires authentication.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class BookDetail(generics.RetrieveAPIView):
+class DetailView(generics.RetrieveUpdateDestroyAPIView):
     """
-    View to retrieve a single book by its primary key.
-    It provides a read-only endpoint for unauthenticated users.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
-
-class BookCreate(generics.CreateAPIView):
-    """
-    View to handle the creation of a new book.
-    This endpoint is restricted to authenticated users.
+    Handles retrieving, updating, and deleting a single book.
+    - GET method is public (read-only).
+    - PUT, PATCH, DELETE methods require authentication.
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-class BookUpdate(generics.UpdateAPIView):
-    """
-    View to handle updating an existing book by its primary key.
-    This endpoint is restricted to authenticated users.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-class BookDelete(generics.DestroyAPIView):
-    """
-    View to handle the deletion of a book by its primary key.
-    This endpoint is restricted to authenticated users.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
