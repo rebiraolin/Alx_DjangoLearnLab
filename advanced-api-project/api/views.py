@@ -3,23 +3,27 @@ from .serializers import BookSerializer
 from rest_framework import generics, permissions
 
 
-# Create your views here.
-class ListView(generics.ListCreateAPIView):
-    """
-    Handles listing books and creating new books.
-    - GET method is public (read-only).
-    - POST method requires authentication.
-    """
+class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
-class DetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    Handles retrieving, updating, and deleting a single book.
-    - GET method is public (read-only).
-    - PUT, PATCH, DELETE methods require authentication.
-    """
+class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
+
+class CreateView(generics.CreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class UpdateView(generics.UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class DeleteView(generics.DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
