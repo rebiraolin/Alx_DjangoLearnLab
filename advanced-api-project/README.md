@@ -33,3 +33,33 @@ This project is an advanced API for managing a library of authors and books. It 
 - **Method**: `DELETE`
 - **Permissions**: `IsAuthenticated` (authenticated users only)
 - **Description**: Deletes a book instance from the database.
+
+***
+
+## Advanced Querying Capabilities
+
+The `/api/books/` endpoint now supports filtering, searching, and ordering to provide more flexible data retrieval. These features are enabled through query parameters.
+
+### Filtering
+
+You can filter the list of books by specific field values.
+
+* **`publication_year`**: Filter by a specific year.
+    -   **Example**: `/api/books/?publication_year=2024`
+* **`title`**: Filter by a specific title.
+    -   **Example**: `/api/books/?title=The Great Adventure`
+
+### Searching
+
+You can perform a text search across multiple fields.
+
+* **`search`**: Search for a keyword in the `title` or `author` fields.
+    -   **Example**: `/api/books/?search=journey`
+
+### Ordering
+
+You can order the results by specific fields in either ascending or descending order.
+
+* **`ordering`**: Sort by `title` or `publication_year`. Use a minus sign (`-`) for descending order.
+    -   **Example (ascending)**: `/api/books/?ordering=title`
+    -   **Example (descending)**: `/api/books/?ordering=-publication_year`
