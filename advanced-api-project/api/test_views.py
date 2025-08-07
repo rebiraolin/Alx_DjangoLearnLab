@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
 from api.models import Author, Book
+from django.contrib.auth.models import User
 
 class BookAPITestCase(APITestCase):
     def setUp(self):
@@ -14,6 +15,21 @@ class BookAPITestCase(APITestCase):
         )
 
         self.list_url = reverse('book-list')
+        self.user = User.objects.create_user(username='testuser', password='password123')
+
+    def test_create_book_authenticated(self):
+        """
+        Ensure an authenticated user can create a book.
+        """
+        self.client.login(username='testuser', password='password123')
+
+        url = reverse('book-create')
+        data = {'title': 'New Book', 'publication_year': 2024, 'author': self.author.id}
+
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Book.objects.count(), 2)
+        self.assertEqual(Book.objects.last().title, 'New Book')
 
     def test_list_books(self):
         """
