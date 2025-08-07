@@ -31,6 +31,36 @@ class BookAPITestCase(APITestCase):
         self.assertEqual(Book.objects.count(), 2)
         self.assertEqual(Book.objects.last().title, 'New Book')
 
+    def test_update_book_authenticated(self):
+        """
+        Ensure an authenticated user can update a book.
+        """
+        self.client.login(username='testuser', password='password123')
+
+        # Get the URL for the specific book
+        url = reverse('book-update', kwargs={'pk': self.book.id})
+
+        updated_data = {'title': 'Updated Title', 'publication_year': 2025, 'author': self.author.id}
+        response = self.client.patch(url, updated_data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.book.refresh_from_db()
+        self.assertEqual(self.book.title, 'Updated Title')
+
+    def test_delete_book_authenticated(self):
+        """
+        Ensure an authenticated user can delete a book.
+        """
+        self.client.login(username='testuser', password='password123')
+
+        # Get the URL for the specific book
+        url = reverse('book-delete', kwargs={'pk': self.book.id})
+
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Book.objects.filter(pk=self.book.id).exists())
+
     def test_list_books(self):
         """
         Ensure we can get the list of books.
