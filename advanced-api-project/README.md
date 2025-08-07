@@ -63,3 +63,14 @@ You can order the results by specific fields in either ascending or descending o
 * **`ordering`**: Sort by `title` or `publication_year`. Use a minus sign (`-`) for descending order.
     -   **Example (ascending)**: `/api/books/?ordering=title`
     -   **Example (descending)**: `/api/books/?ordering=-publication_year`
+
+***
+
+## Testing
+
+### How to Run Tests
+
+To run the unit tests for the API, navigate to the project's root directory and use the following command:
+
+```bash
+python manage.py test api
