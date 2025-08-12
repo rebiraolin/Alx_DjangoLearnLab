@@ -1,76 +1,114 @@
-# Django Blog Project – Authentication System
+Django Blog Project – Authentication System and Post Management
+Project Overview
+This repository contains the code for a Django blog project, developed as part of the Alx_DjangoLearnLab curriculum.
 
-## Project Overview
-This repository contains the code for a **Django blog project**, developed as part of the **Alx_DjangoLearnLab** curriculum.  
-The first phase focuses on creating a secure and user-friendly **authentication system** that supports user registration, login, logout, and profile management.
+The first phase focused on a secure and user-friendly authentication system. The second phase introduces a full post management system with CRUD (Create, Read, Update, Delete) functionality.
 
-## Authentication System Features
+Authentication System Features
 The authentication system combines Django's built-in authentication tools with custom views and forms to enhance functionality and user experience.
 
-- **User Registration** – `UserRegistrationForm` extends Django's default user creation form to include an email field.
-- **Login & Logout** – Uses Django's built-in `LoginView` and `LogoutView` for efficient session management.
-- **Profile Management** – Authenticated users can view and update their profile via a custom `UserUpdateForm` and a protected profile view.
+User Registration – UserRegistrationForm extends Django's default user creation form to include an email field.
 
-## Code Structure
+Login & Logout – Uses Django's built-in LoginView and LogoutView for efficient session management.
 
-### `blog/forms.py`
-- **`UserRegistrationForm`** – Custom form for handling user sign-up.
-- **`UserUpdateForm`** – ModelForm for updating an authenticated user's username and email.
+Profile Management – Authenticated users can view and update their profile via a custom UserUpdateForm and a protected profile view.
 
-### `blog/views.py`
-- **`register`** – Handles new user registration.
-- **`profile`** – Protected by `@login_required`, allows authenticated users to view and edit their profile.
+Blog Post Management Features 📝
+This section of the project implements full CRUD functionality for blog posts, using Django's powerful class-based views.
 
-### `blog/urls.py`
-Authentication-related URL mappings:
-- `/register/` → `register` view
-- `/login/` → Django's `LoginView`
-- `/logout/` → Django's `LogoutView`
-- `/profile/` → `profile` view
+Post Model – A custom model to store post data, including title, content, author, and published_date.
 
-### `blog/templates/blog/`
-- `register.html` – Registration page
-- `login.html` – Login page
-- `logout.html` – Logout confirmation page
-- `profile.html` – Profile view and edit page
+Create Posts – A CreateView allows logged-in users to create new blog posts.
 
-## Testing Instructions
-To verify the authentication system works as intended:
+View Posts – Posts are displayed on the home page using a ListView, and individual posts can be viewed in detail using a DetailView.
 
-1. **Run the Server**
-   ```bash
-   python manage.py runserver
+Update & Delete Posts – The UpdateView and DeleteView allow a post's author to edit or remove their own content. These views are protected using LoginRequiredMixin and UserPassesTestMixin to enforce ownership.
 
-Test Registration
+Code Structure
+blog/models.py
+Post – The model for a blog post. Includes a ForeignKey to the User model and a get_absolute_url method for redirection.
 
-Visit: http://127.0.0.1:8000/blog/register/
+UserRegistrationForm – Custom form for handling user sign-up.
 
-Create a new user
+UserUpdateForm – ModelForm for updating an authenticated user's username and email.
 
-Check validation errors for mismatched passwords or existing usernames
+blog/views.py
+register – Handles new user registration.
 
-Test Login
+profile – Protected by @login_required, allows authenticated users to view and edit their profile.
 
-Visit: http://127.0.0.1:8000/blog/login/
+PostListView – Displays a list of all blog posts on the home page.
 
-Log in with valid credentials
+PostDetailView – Displays a single blog post's content.
 
-Ensure incorrect credentials show an error message
+PostCreateView – Renders a form for creating a new post. Protected by LoginRequiredMixin.
 
-Test Profile Management
+PostUpdateView – Renders a form for updating an existing post. Protected by LoginRequiredMixin and UserPassesTestMixin.
 
-While logged in, visit: http://127.0.0.1:8000/blog/profile/
+PostDeleteView – Handles the deletion of a post. Protected by LoginRequiredMixin and UserPassesTestMixin.
 
-View and update your username and email
+blog/urls.py
+/register/ → register view
 
-Confirm that logged-out users are redirected to the login page when accessing /blog/profile/
+/login/ → Django's LoginView
 
-Test Logout
+/logout/ → Django's LogoutView
 
-Click the Logout link while logged in
+/profile/ → profile view
 
-Confirm you are logged out and that navigation links update accordingly
+/ → PostListView
 
-pgsql
-Copy
-Edit
+/post/<int:pk>/ → PostDetailView
+
+/post/new/ → PostCreateView
+
+/post/<int:pk>/update/ → PostUpdateView
+
+/post/<int:pk>/delete/ → PostDeleteView
+
+blog/templates/blog/
+register.html – Registration page
+
+login.html – Login page
+
+logout.html – Logout confirmation page
+
+profile.html – Profile view and edit page
+
+home.html – Main blog page displaying all posts
+
+post_detail.html – Individual post detail page
+
+post_form.html – Template for creating and updating posts
+
+post_confirm_delete.html – Confirmation page for deleting a post
+
+Testing Instructions
+Test Authentication System
+Run the Server
+
+Bash
+
+python manage.py runserver
+Test Registration: Visit http://127.0.0.1:8000/blog/register/ to create a new user.
+
+Test Login: Visit http://127.0.0.1:8000/blog/login/ to log in with valid credentials.
+
+Test Profile Management: While logged in, visit http://127.0.0.1:8000/blog/profile/ to view and update your details.
+
+Test Logout: Click the "Logout" link to confirm you are logged out.
+
+Test Blog Post Management
+Test Create: Log in and visit http://127.0.0.1:8000/blog/post/new/ to create a new post.
+
+Test Read: Navigate to the home page to see all posts, then click on a post's title to view its detail page.
+
+Test Update: While logged in as the post's author, visit the post's detail page and click the "Update" button. Edit the content and save.
+
+Test Delete: While logged in as the post's author, click the "Delete" button on the detail page. Confirm the deletion on the next page and verify the post is removed from the home page.
+
+Test Permissions:
+
+Try to access the update or delete page for a post you did not author. You should be denied access.
+
+Try to access any of the post-related management pages while logged out. You should be redirected to the login page.
