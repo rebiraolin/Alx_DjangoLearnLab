@@ -62,19 +62,6 @@ class PostDetailView(DetailView):
         context['comment_form'] = CommentForm()
 
         return context
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = self.object
-            comment.author = self.request.user
-            comment.save()
-            return redirect('post_detail', pk=self.object.pk)
-        return self.get(request, *args, **kwargs)
-
-
 
 class PostCreateView(CreateView, LoginRequiredMixin):
     model = Post
@@ -122,6 +109,19 @@ class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         comment = self.get_object()
         return reverse('post_detail', kwargs={'pk':comment.post.pk})
 
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/post_detail.html'
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_pk'))
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    def get_success_url(self):
+        post = get_object_or_404(Post, pk=self.kwargs.get('post_pk'))
+        return reverse('post_detail', kwargs={'pk':post.pk})
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin , DeleteView):
     model = Comment

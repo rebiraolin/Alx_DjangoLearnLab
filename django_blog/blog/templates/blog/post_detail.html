@@ -40,7 +40,7 @@
 
     {% if user.is_authenticated %}
         <div class="content-section">
-            <form method="POST">
+            <form method="POST" action="{% url 'comment_create' object.pk %}">
                 {% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Add a Comment</legend>
