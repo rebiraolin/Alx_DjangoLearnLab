@@ -17,4 +17,42 @@
             <p class="article-content">{{ object.content }}</p>
         </div>
     </article>
+
+    <hr>
+    <h3>Comments ({{ comments|length }})</h3>
+    {% for comment in comments %}
+        <div class="card card-body mb-2">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ comment.author }}</a>
+                <small class="text-muted">{{ comment.created_at|date:"F d, Y" }}</small>
+                {% if user.is_authenticated and user == comment.author %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'comment_update' comment.post.pk comment.pk %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'comment_delete' comment.post.pk comment.pk %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <p>{{ comment.content }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Add a Comment</legend>
+                    {{ comment_form.as_p }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Post Comment</button>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <p class="mt-4">Please <a href="{% url 'login' %}">log in</a> to post a comment.</p>
+    {% endif %}
+
 {% endblock %}

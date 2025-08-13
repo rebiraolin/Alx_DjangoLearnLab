@@ -112,3 +112,13 @@ Test Permissions:
 Try to access the update or delete page for a post you did not author. You should be denied access.
 
 Try to access any of the post-related management pages while logged out. You should be redirected to the login page.
+
+Test Comment Management
+
+Create: Log in, visit a post's detail page, fill out the comment form, and click "Post Comment." Verify the comment appears.
+
+Update: While logged in as the comment's author, find your comment on the detail page and click "Update." Edit the content and save.
+
+Delete: While logged in as the comment's author, find your comment on the detail page and click "Delete." Confirm the deletion on the next page.
+
+Permissions: Try to access the update or delete URL for a comment you did not author. You should be denied access.
