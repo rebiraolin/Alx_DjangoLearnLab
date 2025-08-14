@@ -15,7 +15,18 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
-        </div>
+            {% if object.tags.all %}
+                <div class="mt-2">
+                    <small class="text-muted">Tags:
+                        {% for tag in object.tags.all %}
+                            <span class="badge badge-info">
+                                <a class="text-white" href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
+                            </span>
+                        {% endfor %}
+                    </small>
+                </div>
+            {% endif %}
+            </div>
     </article>
 
     <hr>

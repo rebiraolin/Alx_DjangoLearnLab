@@ -17,7 +17,12 @@
                 <a href="{% url 'register' %}">Register</a>
                 <a href="{% url 'login' %}">Login</a>
             {% endif %}
-        </nav>
+
+            <form action="{% url 'post_search' %}" method="GET">
+                <input type="text" placeholder="Search..." name="q">
+                <button type="submit">Search</button>
+            </form>
+            </nav>
     </header>
 
     {% if messages %}
