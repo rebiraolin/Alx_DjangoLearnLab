@@ -155,7 +155,7 @@ class PostSearchView(ListView):
         else:
             return Post.objects.none()
 
-class PostListByTagView(ListView):
+class PostByTagListView(ListView):
     model = Post
     template_name = 'blog/post_list_by_tag.html'
 
